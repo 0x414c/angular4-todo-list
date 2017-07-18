@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Location } from '@angular/common';
+import { Router } from '@angular/router';
 
 import * as moment from 'moment';
 
@@ -24,14 +25,11 @@ export class AddComponent {
   constructor(
     private todosService: TodosService,
     private location: Location,
+    private router: Router,
   ) { }
 
-  goBack(): void {
-    this.location.back();
-  }
-
-  validate(): boolean {
-    return this.todoText && this.todoText.length > 0;
+  goToTodos(): void {
+    this.router.navigate(['/todos']);
   }
 
   onSubmit(form: any, event: Event) {
@@ -45,6 +43,6 @@ export class AddComponent {
 
     this.todosService
       .create(todo)
-      .then(() => this.goBack());
+      .then(() => this.goToTodos());
   }
 }
