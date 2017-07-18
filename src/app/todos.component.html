@@ -1,0 +1,49 @@
+<div *ngIf="todos">
+  <fieldset [disabled]="!(todos.length > 0)">
+    <div class="row">
+      <div class="col-md-12">
+        <input [(ngModel)]="searchQuery" class="form-control" type="text" size="32" placeholder="Search tasks...">
+      </div>
+    </div>
+  </fieldset>
+
+  <div class="row">
+    <div class="col-md-12">
+      <h4>Tasks</h4>
+
+      <p [ngSwitch]="todos.length">
+        <span *ngSwitchCase="0">No tasks added yet...</span>
+        <!--TODO: [1;1] Get rid of case like `N of N remaining'-->
+        <span *ngSwitchDefault>You have {{remaining()}} tasks of {{todos.length}} remaining</span>
+      </p>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-12">
+      <div *ngIf="todos.length > 0" [ngSwitch]="(todos).length">
+        <p *ngSwitchCase="0">(no search results for query "{{searchQuery}}")</p>
+
+        <table *ngSwitchDefault class="table table-striped table-hover table-condensed">
+          <tbody>
+          <tr *ngFor="let todo of todos"
+              [ngClass]="{'success': todo.done, 'warning': shouldNotify(todo)}">
+            <td>
+              <input [(ngModel)]="todo.done" type="checkbox">
+              <span class="done-{{todo.done}}">{{todo.text}}</span>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-12">
+      <button *ngIf="todos.length - remaining() > 0" (click)="done()" class="btn btn-success">
+        Done <span class="badge">{{todos.length - remaining()}}</span>
+      </button>
+    </div>
+  </div>
+</div>
