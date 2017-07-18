@@ -28,11 +28,12 @@
       'angular-in-memory-web-api': 'npm:angular-in-memory-web-api/bundles/in-memory-web-api.umd.js',
 
       'angular-2-local-storage': 'npm:angular-2-local-storage/dist',
-      'moment': 'npm:moment'
+      'moment': 'npm:moment',
+      'ng2-search-filter': 'node_modules/ng2-search-filter'
     },
     // packages tells the System loader how to load when no filename and/or no extension
     packages: {
-      app: {
+      'app': {
         defaultExtension: 'js',
         meta: {
           './*.js': {
@@ -40,16 +41,19 @@
           }
         }
       },
-      rxjs: {
+      'rxjs': {
         defaultExtension: 'js'
       },
       'angular-2-local-storage': {
         main: 'index.js',
         defaultExtension: 'js'
       },
-      moment: {
+      'moment': {
         main: 'moment.js',
         defaultExtension: 'js'
+      },
+      'ng2-search-filter': {
+        main: 'dist/index.js'
       }
     }
   });

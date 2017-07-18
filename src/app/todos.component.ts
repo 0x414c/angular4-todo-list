@@ -19,6 +19,7 @@ import { Todo } from './todo';
 })
 export class TodosComponent implements OnInit {
   private todos: Todo[];
+  private searchQuery: string;
 
   constructor(
     private router: Router,
