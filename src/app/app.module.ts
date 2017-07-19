@@ -3,6 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
 
 import { LocalStorageModule } from 'angular-2-local-storage';
+// import { LocalStorageService } from 'angular2-localstorage';
 
 import { AppRoutingModule } from './app-routing.module';
 

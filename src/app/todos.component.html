@@ -45,7 +45,7 @@
 
   <div class="row">
     <div class="col-md-12">
-      <button *ngIf="todos.length - remaining() > 0" (click)="done()"
+      <button *ngIf="todos.length - remaining() > 0" (click)="onDone()"
               class="btn btn-success">
         Done <span class="badge">{{todos.length - remaining()}}</span>
       </button>

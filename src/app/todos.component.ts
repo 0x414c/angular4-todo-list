@@ -30,7 +30,7 @@ export class TodosComponent implements OnInit {
     this.getTodos();
   }
 
-  getTodos(): void {
+  private getTodos(): void {
     this.todosService.getTodos()
       .then(todos => this.todos = todos);
   }
@@ -41,10 +41,16 @@ export class TodosComponent implements OnInit {
     }, 0);
   }
 
-  done(): void {
+  onDone(): void {
+    this.removeAllIfDone();
+  }
+
+  private removeAllIfDone(): void {
     this.todos = this.todos.filter(todo => {
       return !todo.done;
     });
+
+    this.todosService.setTodos(this.todos);
   }
 
   shouldNotify(todo: Todo): boolean {
