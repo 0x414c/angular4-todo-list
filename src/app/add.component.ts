@@ -33,7 +33,6 @@ export class AddComponent {
   }
 
   onSubmit(form: any, event: Event) {
-    event.preventDefault();
     this.addTodo();
   }
 

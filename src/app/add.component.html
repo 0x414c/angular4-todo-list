@@ -17,9 +17,11 @@
         </div>
 
         <button (click)="goToTodos()"
-                class="btn btn-default" role="button">Cancel</button>
-        <input [disabled]="!addForm.form.valid" class="btn btn-success"
-               type="submit" value="Save">
+                class="btn btn-default"
+                type="button">Cancel</button>
+        <button [disabled]="!addForm.form.valid"
+                class="btn btn-success"
+                type="submit">Save</button>
       </form>
     </div>
   </div>
