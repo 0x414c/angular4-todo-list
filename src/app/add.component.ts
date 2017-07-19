@@ -23,13 +23,13 @@ export class AddComponent {
   private todoDueDateTime: Date;
 
   constructor(
-    private todosService: TodosService,
-    private location: Location,
-    private router: Router,
+    private _todosService: TodosService,
+    private _location: Location,
+    private _router: Router,
   ) { }
 
-  goToTodos(): void {
-    this.router.navigate(['/todos']);
+  private goToTodos(): void {
+    this._router.navigate(['/todos']);
   }
 
   onSubmit(): void {
@@ -39,8 +39,7 @@ export class AddComponent {
   addTodo(): void {
     let todo = new Todo(false, this.todoText, moment(this.todoDueDateTime).toDate());
 
-    this.todosService
-      .create(todo)
-      .then(() => this.goToTodos());
+    this._todosService.create(todo);
+    this.goToTodos();
   }
 }

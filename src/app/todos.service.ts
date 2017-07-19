@@ -1,49 +1,46 @@
 import { Injectable } from '@angular/core';
 
+import { Observable } from 'rxjs/Observable';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+
 import { LocalStorageService } from 'angular-2-local-storage';
 
 import { Todo } from './todo';
 
 @Injectable()
 export class TodosService {
-  private static LOCALSTORAGE_KEY = 'todos';
-  private todos: Todo[] = null;
+  private readonly _localStorageKey = 'todos';
+  private _todos: BehaviorSubject<Todo[]>;
+  private _data: { todos: Todo[] };
 
   constructor(
-    private localStorageService: LocalStorageService,
-  ) { }
+    private _localStorageService: LocalStorageService,
+  ) {
+    this._data = { todos: [] };
+    this._todos = new BehaviorSubject<Todo[]>([]);
+  }
 
-  private fetchTodos(): void {
-    this.todos = this.localStorageService.get<Todo[]>(TodosService.LOCALSTORAGE_KEY) || [];
+  fetchTodos(): void {
+    this._data.todos = (this._localStorageService.get<Todo[]>(this._localStorageKey) || []);
+    this._todos.next(this._data.todos);
   }
 
   private flushTodos(): void {
-    this.localStorageService.set(TodosService.LOCALSTORAGE_KEY, this.todos);
+    this._localStorageService.set(this._localStorageKey, this._data.todos);
   }
 
-  getTodos(): Promise<Todo[]> {
-    if (!this.todos) {
-      this.fetchTodos();
-    }
-
-    return Promise.resolve(this.todos);
+  get todos(): Observable<Todo[]> {
+    return this._todos.asObservable();
   }
 
-  setTodos(todos: Todo[]): Promise<void> {
-    this.todos = todos;
+  setTodos(todos: Todo[]) {
+    // this.todos = todos;
+    // this.flushTodos();
+  }
+
+  create(todo: Todo) {
+    this._data.todos.push(todo);
     this.flushTodos();
-
-    return Promise.resolve();
-  }
-
-  create(todo: Todo): Promise<void> {
-    if (!this.todos) {
-      this.fetchTodos();
-    }
-
-    this.todos.push(todo);
-    this.flushTodos();
-
-    return Promise.resolve();
+    this._todos.next(this._data.todos);
   }
 }
