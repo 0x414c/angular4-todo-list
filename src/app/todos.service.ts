@@ -1,11 +1,11 @@
-import { Injectable, OnInit, OnDestroy } from '@angular/core';
+import { Injectable } from '@angular/core';
 
 import { LocalStorageService } from 'angular-2-local-storage';
 
 import { Todo } from './todo';
 
 @Injectable()
-export class TodosService implements OnInit, OnDestroy {
+export class TodosService {
   private static LOCALSTORAGE_KEY = 'todos';
   private todos: Todo[] = null;
 
