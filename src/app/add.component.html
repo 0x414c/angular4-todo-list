@@ -1,7 +1,7 @@
 <div>
   <div class="row">
     <div class="col-md-12">
-      <form #addForm="ngForm" (ngSubmit)="onSubmit(addForm, $event)">
+      <form #addForm="ngForm" (ngSubmit)="onSubmit()">
         <div class="form-group">
           <label for="todoTextInput">Task</label>
           <input [(ngModel)]="todoText"
