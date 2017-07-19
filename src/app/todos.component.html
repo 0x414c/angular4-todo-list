@@ -32,7 +32,7 @@
           <tr *ngFor="let todo of todos | async | filter: searchQuery"
               [ngClass]="{'success': todo.done, 'warning': shouldNotify(todo)}">
             <td>
-              <input [(ngModel)]="todo.done"
+              <input [checked]="todo.done" (change)="onChangeTodoDone($event, todo)"
                      type="checkbox">
               <span>{{todo.text}}</span>
             </td>
@@ -45,7 +45,7 @@
 
   <div class="row">
     <div class="col-md-12">
-      <button *ngIf="(todos | async).length - (remaining | async) > 0" (click)="onDone()"
+      <button *ngIf="(todos | async).length - (remaining | async) > 0" (click)="onClickDone()"
               class="btn btn-success">
         Done <span class="badge">{{(todos | async).length - (remaining | async)}}</span>
       </button>

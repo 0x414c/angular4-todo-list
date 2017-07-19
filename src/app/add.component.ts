@@ -32,14 +32,14 @@ export class AddComponent {
     this._router.navigate(['/todos']);
   }
 
-  onSubmit(): void {
+  onSubmitAddForm(): void {
     this.addTodo();
   }
 
   addTodo(): void {
     let todo = new Todo(false, this.todoText, moment(this.todoDueDateTime).toDate());
 
-    this._todosService.create(todo);
+    this._todosService.createTodo(todo);
     this.goToTodos();
   }
 }

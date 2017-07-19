@@ -29,18 +29,22 @@ export class TodosService {
     this._localStorageService.set(this._localStorageKey, this._data.todos);
   }
 
+  private finalizeDataChanges(): void {
+    this.flushTodos();
+    this._todos.next(this._data.todos);
+  }
+
   get todos(): Observable<Todo[]> {
     return this._todos.asObservable();
   }
 
   setTodos(todos: Todo[]) {
-    // this.todos = todos;
-    // this.flushTodos();
+    this._data.todos = todos;
+    this.finalizeDataChanges();
   }
 
-  create(todo: Todo) {
+  createTodo(todo: Todo) {
     this._data.todos.push(todo);
-    this.flushTodos();
-    this._todos.next(this._data.todos);
+    this.finalizeDataChanges();
   }
 }

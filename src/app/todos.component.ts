@@ -31,10 +31,6 @@ export class TodosComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.initialize();
-  }
-
-  private initialize(): void {
     this.todos = this._todosService.todos;
     this.remaining = this.todos.map(todos => {
       return todos.reduce((acc, it) => {
@@ -44,7 +40,11 @@ export class TodosComponent implements OnInit {
     this._todosService.fetchTodos();
   }
 
-  onDone(): void {
+  onChangeTodoDone(event: Event, todo: Todo): void {
+    todo.done = (event.target as HTMLInputElement).checked;
+  }
+
+  onClickDone(): void {
     this.removeAllIfDone();
   }
 
@@ -54,6 +54,8 @@ export class TodosComponent implements OnInit {
     // });
     //
     // this._todosService.setTodos(this.todos);
+
+    // this._todosService.setTodos()
   }
 
   shouldNotify(todo: Todo): boolean {
