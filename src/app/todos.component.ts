@@ -41,7 +41,8 @@ export class TodosComponent implements OnInit {
   }
 
   onChangeTodoDone(event: Event, todo: Todo): void {
-    todo.done = (event.target as HTMLInputElement).checked;
+    let done = (event.target as HTMLInputElement).checked;
+    this._todosService.setTodoDone(todo.id, done);
   }
 
   onClickDone(): void {
@@ -49,13 +50,7 @@ export class TodosComponent implements OnInit {
   }
 
   private removeAllIfDone(): void {
-    // this.todos = this.todos.filter(todo => {
-    //   return !todo.done;
-    // });
-    //
-    // this._todosService.setTodos(this.todos);
-
-    // this._todosService.setTodos()
+    this._todosService.removeAllTodosIfDone();
   }
 
   shouldNotify(todo: Todo): boolean {

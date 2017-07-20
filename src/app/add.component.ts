@@ -1,5 +1,4 @@
-import { Component } from '@angular/core';
-import { Location } from '@angular/common';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
 import * as moment from 'moment';
@@ -18,15 +17,18 @@ import { TodosService } from './todos.service';
 
   providers: [ TodosService ],
 })
-export class AddComponent {
+export class AddComponent implements OnInit {
   private todoText: string;
   private todoDueDateTime: Date;
 
   constructor(
     private _todosService: TodosService,
-    private _location: Location,
     private _router: Router,
   ) { }
+
+  ngOnInit(): void {
+    this._todosService.fetchTodos();
+  }
 
   private goToTodos(): void {
     this._router.navigate(['/todos']);

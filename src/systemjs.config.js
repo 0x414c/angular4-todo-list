@@ -29,7 +29,8 @@
 
       'angular-2-local-storage': 'npm:angular-2-local-storage/dist',
       'moment': 'npm:moment',
-      'ng2-search-filter': 'node_modules/ng2-search-filter'
+      'ng2-search-filter': 'npm:ng2-search-filter',
+      'uuid': 'npm:uuid'
     },
     // packages tells the System loader how to load when no filename and/or no extension
     packages: {
@@ -53,7 +54,18 @@
         defaultExtension: 'js'
       },
       'ng2-search-filter': {
-        main: 'dist/index.js'
+        main: 'dist/index.js',
+        defaultExtension: 'js'
+      },
+      'uuid': {
+        main: 'index.js',
+        defaultExtension: 'js',
+        format: 'cjs',
+        map: {
+          'crypto': '@empty',
+          './lib/rng': './lib/rng-browser',
+          './lib/sha1': './lib/sha1-browser'
+        }
       }
     }
   });

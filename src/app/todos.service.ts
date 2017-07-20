@@ -25,12 +25,12 @@ export class TodosService {
     this._todos.next(this._data.todos);
   }
 
-  private flushTodos(): void {
+  private _flushTodos(): void {
     this._localStorageService.set(this._localStorageKey, this._data.todos);
   }
 
-  private finalizeDataChanges(): void {
-    this.flushTodos();
+  private _finalizeDataChanges(): void {
+    this._flushTodos();
     this._todos.next(this._data.todos);
   }
 
@@ -40,11 +40,31 @@ export class TodosService {
 
   setTodos(todos: Todo[]) {
     this._data.todos = todos;
-    this.finalizeDataChanges();
+    this._finalizeDataChanges();
   }
 
   createTodo(todo: Todo) {
     this._data.todos.push(todo);
-    this.finalizeDataChanges();
+    this._finalizeDataChanges();
+  }
+
+  setTodoDone(id: string, done: boolean): void {
+    console.log(id, done);
+
+    this._data.todos = this._data.todos.map(todo => {
+      if (todo.id === id) {
+        todo.done = done;
+      }
+
+      return todo;
+    });
+    this._finalizeDataChanges();
+  }
+
+  removeAllTodosIfDone(): void {
+    this._data.todos = this._data.todos.filter(todo => {
+      return !todo.done;
+    });
+    this._finalizeDataChanges();
   }
 }
