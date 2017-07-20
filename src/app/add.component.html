@@ -1,28 +1,26 @@
-<div>
-  <div class="row">
-    <div class="col-md-12">
-      <form #addForm="ngForm" (ngSubmit)="onSubmitAddForm()">
-        <div class="form-group">
-          <label for="todoTextInput">Task</label>
-          <input [(ngModel)]="todoText"
-                 class="form-control" id="todoTextInput"
-                 name="todoText" type="text" size="32" placeholder="Task summary" required>
-        </div>
+<div class="row">
+  <div class="col-md-12">
+    <form #addForm="ngForm" (ngSubmit)="onSubmitAddForm()">
+      <div class="form-group">
+        <label for="todoTextInput">Task</label>
+        <input [(ngModel)]="todoText"
+               class="form-control" id="todoTextInput"
+               name="todoText" type="text" size="32" placeholder="Task summary" required>
+      </div>
 
-        <div class="form-group">
-          <label for="todoDueDateTimeInput">Due date & time</label>
-          <input [(ngModel)]="todoDueDateTime"
-                 class="form-control" id="todoDueDateTimeInput"
-                 name="todoDueDateTime" type="datetime-local" required>
-        </div>
+      <div class="form-group">
+        <label for="todoDueDateTimeInput">Due date & time</label>
+        <input [(ngModel)]="todoDueDateTime"
+               class="form-control" id="todoDueDateTimeInput"
+               name="todoDueDateTime" type="datetime-local" required>
+      </div>
 
-        <button (click)="goToTodos()"
-                class="btn btn-default"
-                type="button">Cancel</button>
-        <button [disabled]="!addForm.form.valid"
-                class="btn btn-success"
-                type="submit">Save</button>
-      </form>
-    </div>
+      <button (click)="goToTodos()"
+              class="btn btn-default"
+              type="button">Cancel</button>
+      <button [disabled]="!addForm.form.valid"
+              class="btn btn-success"
+              type="submit">Save</button>
+    </form>
   </div>
 </div>
