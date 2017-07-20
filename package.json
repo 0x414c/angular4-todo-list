@@ -32,6 +32,7 @@
     "@angular/platform-browser": "~4.0.0",
     "@angular/platform-browser-dynamic": "~4.0.0",
     "@angular/router": "~4.0.0",
+    "@types/node-uuid": "0.0.28",
     "angular-2-local-storage": "^1.0.1",
     "angular-in-memory-web-api": "~0.3.0",
     "bootstrap": "^3.3.7",
@@ -40,6 +41,7 @@
     "ng2-search-filter": "^0.3.1",
     "rxjs": "5.0.1",
     "systemjs": "0.19.40",
+    "uuid": "^3.1.0",
     "zone.js": "^0.8.14"
   },
   "devDependencies": {

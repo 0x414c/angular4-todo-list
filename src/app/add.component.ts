@@ -1,5 +1,4 @@
-import { Component } from '@angular/core';
-import { Location } from '@angular/common';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
 import * as moment from 'moment';
@@ -18,29 +17,31 @@ import { TodosService } from './todos.service';
 
   providers: [ TodosService ],
 })
-export class AddComponent {
+export class AddComponent implements OnInit {
   private todoText: string;
   private todoDueDateTime: Date;
 
   constructor(
-    private todosService: TodosService,
-    private location: Location,
-    private router: Router,
+    private _todosService: TodosService,
+    private _router: Router,
   ) { }
 
-  goToTodos(): void {
-    this.router.navigate(['/todos']);
+  ngOnInit(): void {
+    this._todosService.fetchTodos();
   }
 
-  onSubmit(): void {
+  private goToTodos(): void {
+    this._router.navigate(['/todos']);
+  }
+
+  onSubmitAddForm(): void {
     this.addTodo();
   }
 
   addTodo(): void {
     let todo = new Todo(false, this.todoText, moment(this.todoDueDateTime).toDate());
 
-    this.todosService
-      .create(todo)
-      .then(() => this.goToTodos());
+    this._todosService.createTodo(todo);
+    this.goToTodos();
   }
 }

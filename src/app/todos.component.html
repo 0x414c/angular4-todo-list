@@ -1,5 +1,5 @@
-<div *ngIf="todos">
-  <fieldset [disabled]="!(todos.length > 0)">
+<div *ngIf="(todos | async)">
+  <fieldset [disabled]="!((todos | async).length > 0)">
     <div class="row">
       <div class="col-md-12">
         <input [(ngModel)]="searchQuery"
@@ -13,28 +13,28 @@
     <div class="col-md-12">
       <h4>Tasks</h4>
 
-      <p [ngSwitch]="todos.length">
+      <p [ngSwitch]="(todos | async).length">
         <span *ngSwitchCase="0">No tasks added yet...</span>
         <!--TODO: [1;1] Get rid of case like `N of N remaining'-->
-        <span *ngSwitchDefault>You have {{remaining()}} tasks of {{todos.length}} remaining</span>
+        <span *ngSwitchDefault>You have {{(remaining | async)}} tasks of {{(todos | async).length}} remaining</span>
       </p>
     </div>
   </div>
 
   <div class="row">
     <div class="col-md-12">
-      <div *ngIf="todos.length > 0" [ngSwitch]="(todos | filter: searchQuery).length">
+      <div *ngIf="(todos | async).length > 0" [ngSwitch]="(todos | async | filter: searchQuery).length">
         <p *ngSwitchCase="0">(no search results for query "{{searchQuery}}")</p>
 
         <table *ngSwitchDefault
                class="table table-striped table-hover table-condensed">
           <tbody>
-          <tr *ngFor="let todo of todos | filter: searchQuery"
+          <tr *ngFor="let todo of todos | async | filter: searchQuery"
               [ngClass]="{'success': todo.done, 'warning': shouldNotify(todo)}">
             <td>
-              <input [(ngModel)]="todo.done"
+              <input [checked]="todo.done" (change)="onChangeTodoDone($event, todo)"
                      type="checkbox">
-              <span class="done-{{todo.done}}">{{todo.text}}</span>
+              <span>{{todo.text}}</span>
             </td>
           </tr>
           </tbody>
@@ -45,9 +45,9 @@
 
   <div class="row">
     <div class="col-md-12">
-      <button *ngIf="todos.length - remaining() > 0" (click)="onDone()"
+      <button *ngIf="(todos | async).length - (remaining | async) > 0" (click)="onClickDone()"
               class="btn btn-success">
-        Done <span class="badge">{{todos.length - remaining()}}</span>
+        Done <span class="badge">{{(todos | async).length - (remaining | async)}}</span>
       </button>
     </div>
   </div>

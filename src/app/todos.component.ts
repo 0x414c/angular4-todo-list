@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
+import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/operator/map';
+
 import * as moment from 'moment';
 
 import { TodosService } from './todos.service';
@@ -18,39 +21,36 @@ import { Todo } from './todo';
   providers: [ TodosService ],
 })
 export class TodosComponent implements OnInit {
-  private todos: Todo[];
+  private todos: Observable<Todo[]>;
+  private remaining: Observable<number>;
   private searchQuery: string;
 
   constructor(
-    private router: Router,
-    private todosService: TodosService,
+    private _router: Router,
+    private _todosService: TodosService,
   ) { }
 
   ngOnInit(): void {
-    this.getTodos();
+    this.todos = this._todosService.todos;
+    this.remaining = this.todos.map(todos => {
+      return todos.reduce((acc, it) => {
+        return acc + Number(!it.done);
+      }, 0);
+    });
+    this._todosService.fetchTodos();
   }
 
-  private getTodos(): void {
-    this.todosService.getTodos()
-      .then(todos => this.todos = todos);
+  onChangeTodoDone(event: Event, todo: Todo): void {
+    let done = (event.target as HTMLInputElement).checked;
+    this._todosService.setTodoDone(todo.id, done);
   }
 
-  remaining(): number {
-    return this.todos.reduce((acc, it) => {
-      return acc + Number(!it.done);
-    }, 0);
-  }
-
-  onDone(): void {
+  onClickDone(): void {
     this.removeAllIfDone();
   }
 
   private removeAllIfDone(): void {
-    this.todos = this.todos.filter(todo => {
-      return !todo.done;
-    });
-
-    this.todosService.setTodos(this.todos);
+    this._todosService.removeAllTodosIfDone();
   }
 
   shouldNotify(todo: Todo): boolean {

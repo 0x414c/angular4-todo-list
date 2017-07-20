@@ -1,49 +1,70 @@
 import { Injectable } from '@angular/core';
 
+import { Observable } from 'rxjs/Observable';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+
 import { LocalStorageService } from 'angular-2-local-storage';
 
 import { Todo } from './todo';
 
 @Injectable()
 export class TodosService {
-  private static LOCALSTORAGE_KEY = 'todos';
-  private todos: Todo[] = null;
+  private readonly _localStorageKey = 'todos';
+  private _todos: BehaviorSubject<Todo[]>;
+  private _data: { todos: Todo[] };
 
   constructor(
-    private localStorageService: LocalStorageService,
-  ) { }
-
-  private fetchTodos(): void {
-    this.todos = this.localStorageService.get<Todo[]>(TodosService.LOCALSTORAGE_KEY) || [];
+    private _localStorageService: LocalStorageService,
+  ) {
+    this._data = { todos: [] };
+    this._todos = new BehaviorSubject<Todo[]>([]);
   }
 
-  private flushTodos(): void {
-    this.localStorageService.set(TodosService.LOCALSTORAGE_KEY, this.todos);
+  fetchTodos(): void {
+    this._data.todos = (this._localStorageService.get<Todo[]>(this._localStorageKey) || []);
+    this._todos.next(this._data.todos);
   }
 
-  getTodos(): Promise<Todo[]> {
-    if (!this.todos) {
-      this.fetchTodos();
-    }
-
-    return Promise.resolve(this.todos);
+  private _flushTodos(): void {
+    this._localStorageService.set(this._localStorageKey, this._data.todos);
   }
 
-  setTodos(todos: Todo[]): Promise<void> {
-    this.todos = todos;
-    this.flushTodos();
-
-    return Promise.resolve();
+  private _finalizeDataChanges(): void {
+    this._flushTodos();
+    this._todos.next(this._data.todos);
   }
 
-  create(todo: Todo): Promise<void> {
-    if (!this.todos) {
-      this.fetchTodos();
-    }
+  get todos(): Observable<Todo[]> {
+    return this._todos.asObservable();
+  }
 
-    this.todos.push(todo);
-    this.flushTodos();
+  setTodos(todos: Todo[]) {
+    this._data.todos = todos;
+    this._finalizeDataChanges();
+  }
 
-    return Promise.resolve();
+  createTodo(todo: Todo) {
+    this._data.todos.push(todo);
+    this._finalizeDataChanges();
+  }
+
+  setTodoDone(id: string, done: boolean): void {
+    console.log(id, done);
+
+    this._data.todos = this._data.todos.map(todo => {
+      if (todo.id === id) {
+        todo.done = done;
+      }
+
+      return todo;
+    });
+    this._finalizeDataChanges();
+  }
+
+  removeAllTodosIfDone(): void {
+    this._data.todos = this._data.todos.filter(todo => {
+      return !todo.done;
+    });
+    this._finalizeDataChanges();
   }
 }
